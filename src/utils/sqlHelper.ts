@@ -1,49 +1,44 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient();
 
-async function main() {
-  // Create 3 users
-  await Promise.all(
-    [
-      { email: "user1@mail.com", name: "user1" },
-      { email: "user2@mail.com", name: "user2" },
-      { email: "user3@mail.com", name: "user3" },
-    ].map(async (user) =>
-      prisma.user.create({
-        data: user,
-      })
-    )
-  );
+  // Create 1 user
+  const newUser =async() =>{
+    prisma.user.create({
+      data: {
+        name:"Steven",
+        email:"test@test.com",
+        password:"7777777"
+      }
+    })
+  }
 
-  // Read
-  console.log(await prisma.user.findMany());
-
-  // Update user2 name as yrobot
-  await prisma.user.update({
-    where: {
-      email: "user2@mail.com",
-    },
-    data: {
-      name: "yrobot",
-    },
-  });
-
-  // Delete user3
-  await prisma.user.delete({
-    where: {
-      email: "user3@mail.com",
-    },
-  });
-
-  // Read
-  console.log(await prisma.user.findMany());
+  // Read all sser
+  const readAll=async()=>{
+    const allUsers = await prisma.user.findMany();
+    console.log('allUsers',allUsers)
+  }
+  
+  // Update user password
+  const updateUserPassword=async()=>{
+    await prisma.user.update({
+      where: {
+        id: "a0cf21cb-5bd9-4b29-8821-3e8345c35e5d",
+      },
+      data: {
+        password: "88888888",
+      },
+  })
 }
 
-main()
-  .catch((e) => {
-    throw e;
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+  // Delete user
+  const deleteUser=async()=>{
+    const deleteOne =prisma.user.delete({
+      where: {
+        id: "a0cf21cb-5bd9-4b29-8821-3e8345c35e5d",
+      }
+    })
+  }
+
+
+// let test = newUser();
